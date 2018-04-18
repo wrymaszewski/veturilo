@@ -110,3 +110,10 @@ def reduce_data():
         month = last_month
         )
         print(name + ' calculated')
+
+if __name__ == '__main__':
+    # reduce_data()
+    locs = Location.objects.all()
+    for loc in locs:
+        loc.save()
+        print(loc.name + ' saved')

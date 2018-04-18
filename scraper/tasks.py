@@ -53,6 +53,7 @@ def take_snapshot():
         )
         obj.save()
         print('Time: ' +  str(obj.timestamp))
+        print('----------')
 
 
 @periodic_task(run_every=crontab(minute=0, hour=0))
