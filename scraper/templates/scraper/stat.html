@@ -1,19 +1,13 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    {% if stat_wd %}
+{% extends "scraper/scraper_base.html" %}
+{% block charts %}
+  {% if stat_wd %}
     <div style="width:500;height:500">
-    {{ stat_wd|safe }}
+      {{ stat_wd|safe }}
     </div>
-    {% endif %}
-    {% if stat_we %}
+  {% endif %}
+  {% if stat_we %}
     <div style="width:500;height:500">
-    {{ stat_we|safe }}
+      {{ stat_we|safe }}
     </div>
-    {% endif %}
-  </body>
-</html>
+  {% endif %}
+{% endblock charts %}

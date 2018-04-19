@@ -136,7 +136,7 @@ class SnapshotPlots(TemplateView):
             output_type = 'div'
         )
 
-
+        context['locations'] = Location.objects.select_related()
         context['scatter'] = scatter_div
         context['box_wd'] = box_wd_div
         context['box_we'] = box_we_div
@@ -269,6 +269,7 @@ class StatPlots(TemplateView):
             output_type = 'div'
         )
 
+        context['locations'] = Location.objects.select_related()
         context['stat_wd'] = stat_wd_div
         context['stat_we'] = stat_we_div
         return context

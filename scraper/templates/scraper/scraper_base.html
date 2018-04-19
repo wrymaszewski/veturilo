@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block bodyblock %}
+  <table>
+    <thead>
+      <th>Location</th>
+      <th>Available Bikes</th>
+      <th>Free Stands</th>
+      <th>Charts</th>
+    </thead>
+    <tbody>
+      {% for location in locations %}
+        <tr>
+          <td>{{location.name}}</td>
+          <td>{{location.snapshots.last.avail_bikes}}</td>
+          <td>{{location.snapshots.last.free_stands}}</td>
+          <td>
+            <a href="{% url 'scraper:snapshot_plots' slug=location.slug %}">
+              Real-time</a>,&nbsp
+            <span>Monthly Data:&nbsp</span>
+            {% for stat in location.stats.all%}
+              <a href="{% url 'scraper:stat_plots' slug=location.slug year=stat.month|date:'Y' month=stat.month|date:'m' %}">
+                  {{stat.month|date:'M Y'}}</a>&nbsp
+            {% endfor %}
+
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p>Last update: {{locations.0.snapshots.last.timestamp}}</p>
+  {% block charts %}{% endblock charts %}
+{% endblock bodyblock %}
