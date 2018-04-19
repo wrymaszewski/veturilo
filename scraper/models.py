@@ -1,6 +1,9 @@
 from django.db import models
+import datetime
+
 from location_field.models.plain import PlainLocationField
 from django.utils.text import slugify
+
 # Create your models here.
 
 class Location(models.Model):
@@ -26,7 +29,11 @@ class Snapshot(models.Model):
     avail_bikes = models.IntegerField()
     free_stands = models.IntegerField()
     timestamp = models.DateTimeField(auto_now=True)
+    weekend = models.BooleanField()
 
+    def save(self, *args, **kwargs):
+        self.weekend = self.timestamp.weekday() in [6,7]
+        super().save(*args, **kwargs)
 
 class Stat(models.Model):
 
@@ -38,3 +45,4 @@ class Stat(models.Model):
     free_stands_sd = models.FloatField(null=True)
     time = models.TimeField()
     month = models.DateField()
+    weekend = models.BooleanField()

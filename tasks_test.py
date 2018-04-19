@@ -85,21 +85,22 @@ def reduce_data():
     lst=[]
     for snapshot in snapshots:
         lst.append([snapshot.location.name, snapshot.avail_bikes,
-                    snapshot.free_stands, snapshot.timestamp])
-    cols = ['location', 'avail_bikes', 'free_stands', 'timestamp']
+                    snapshot.free_stands, snapshot.timestamp,
+                    snapshot.weekend])
+    cols = ['location', 'avail_bikes', 'free_stands', 'timestamp', 'weekend']
     df = pd.DataFrame(lst, columns=cols)
     df['time'] = df['timestamp'].dt.round('10min').dt.strftime('%H:%M')
 
-    group = df.groupby(['location', 'time'])
+    group = df.groupby(['location', 'time', 'weekend'])
     means = group.mean()
     sd = group.std()
     today = date.today()
     first = today.replace(day=1)
     last_month = first - timedelta(days=1)
 
-    for name, time in means.index:
-        subset_mean = means.xs((name, time), level=(0,1), axis=0)
-        subset_sd = sd.xs((name, time), level=(0,1), axis=0)
+    for name, time, weekend in means.index:
+        subset_mean = means.xs((name, time, weekend), level=(0, 1, 2), axis=0)
+        subset_sd = sd.xs((name, time, weekend), level=(0, 1, 2), axis=0)
         m = Stat.objects.get_or_create(
         location = locations.get(name=name),
         avail_bikes_mean = subset_mean['avail_bikes'],
@@ -107,13 +108,31 @@ def reduce_data():
         avail_bikes_sd = subset_sd['avail_bikes'],
         free_stands_sd = subset_sd['free_stands'],
         time = time,
-        month = last_month
+        month = last_month,
+        weekend = weekend
         )
-        print(name + ' calculated')
+        print(name + ' calculated' + 'weekend: ' + str(weekend))
 
 if __name__ == '__main__':
+    # for snapshot in Snapshot.objects.select_related():
+    #     snapshot.save()
+    #     print(snapshot.location.name +  ' changed')
+    # print('-----------------')
+    # Stat.objects.all().delete()
+    # print('Stats deleted')
     # reduce_data()
-    locs = Location.objects.all()
-    for loc in locs:
-        loc.save()
-        print(loc.name + ' saved')
+    # locs = Location.objects.all()
+    # for loc in locs:
+    #     loc.save()
+    #     print(loc.name + ' saved')
+    #
+    # stats = Stat.objects.select_related()
+    #
+    # for stat in stats:
+    #     stat.avail_bikes_sd = 1
+    #     stat.free_stands_sd = 2
+    #     stat.save()
+    #     print(stat.location.name)
+
+    # snap = Snapshot.objects.first()
+    # print(snap.timestamp.weekday())
