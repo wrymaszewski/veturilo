@@ -1,6 +1,6 @@
-from django.db import models
 import datetime
 
+from django.db import models
 from location_field.models.plain import PlainLocationField
 from django.utils.text import slugify
 
@@ -28,7 +28,7 @@ class Snapshot(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='snapshots')
     avail_bikes = models.IntegerField()
     free_stands = models.IntegerField()
-    timestamp = models.DateTimeField(auto_now=True)
+    timestamp = models.DateTimeField()
     weekend = models.BooleanField()
 
     def save(self, *args, **kwargs):
