@@ -21,10 +21,11 @@ class SnapshotPlots(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
 
-
         #### plotting from snapshots ####
         snapshots = (Snapshot.objects
                         .filter(location__slug = self.kwargs.get('slug'))
+                        .filter(timestamp__gte = datetime.datetime.now()
+                                    -datetime.timedelta(hours=24))
                         .select_related()
                     )
         location_name = snapshots[0].location.name
@@ -45,14 +46,14 @@ class SnapshotPlots(TemplateView):
         scatter_trace1 = go.Scatter(
             x = df['timestamp'],
             y = df['avail_bikes'],
-            mode = 'lines+markers',
+            mode = 'lines',
             name = 'Available Bicycles',
         )
 
         scatter_trace2 = go.Scatter(
             x = df['timestamp'],
             y = df['free_stands'],
-            mode = 'lines+markers',
+            mode = 'lines',
             name = 'Free Stands',
         )
 
@@ -72,75 +73,18 @@ class SnapshotPlots(TemplateView):
             output_type = 'div'
         )
 
-        # boxplot weekdays
-        box_trace1 = go.Box(
-        x = df[df['weekend']]['hour'],
-        y = df[df['weekend']]['avail_bikes'],
-        boxpoints = False,
-        name = 'Available Bicycles',
-        )
-        box_trace2 = go.Box(
-        x = df['hour'],
-        y = df['free_stands'],
-        boxpoints = False,
-        name = 'Free Stands',
-        )
+        locations = Location.objects.select_related()
+        location = snapshots[0].location
+        context['locations'] = locations
 
-        box_data = go.Data([box_trace1, box_trace2])
-        box_layout = go.Layout(
-            title = 'Weekdays',
-            xaxis = {'title':'Time'},
-            yaxis = {'title':'Number'},
-            boxmode = 'group'
-        )
-
-        box_figure = go.Figure(
-            data = box_data,
-            layout = box_layout
-        )
-        box_wd_div = opy.plot(
-            box_figure,
-            auto_open = False,
-            output_type = 'div'
-        )
-
-        # boxplot weekends
-        box_trace1 = go.Box(
-        x = df[df['weekend']==False]['hour'],
-        y = df[df['weekend']==False]['avail_bikes'],
-        boxpoints = False,
-        name = 'Available Bicycles',
-        )
-        box_trace2 = go.Box(
-        x = df['hour'],
-        y = df['free_stands'],
-        boxpoints = False,
-        name = 'Free Stands',
-        )
-
-        box_data = go.Data([box_trace1, box_trace2])
-        box_layout = go.Layout(
-            title = 'Weekends',
-            xaxis = {'title':'Time'},
-            yaxis = {'title':'Number'},
-            boxmode = 'group'
-        )
-
-        box_figure = go.Figure(
-            data = box_data,
-            layout = box_layout
-        )
-        box_we_div = opy.plot(
-            box_figure,
-            auto_open = False,
-            output_type = 'div'
-        )
-
-        context['locations'] = Location.objects.select_related()
-        context['location'] = snapshots[0].location
+        months = set()
+        for stat in location.stats.all():
+            if stat.month:
+                months.add(stat.month)
+        months_list = list(months)
+        context['months'] = sorted(months_list)
+        context['location'] = location
         context['scatter'] = scatter_div
-        context['box_wd'] = box_wd_div
-        context['box_we'] = box_we_div
         return context
 
 

@@ -25,20 +25,22 @@ class Location(models.Model):
 class Snapshot(models.Model):
 
 
-    location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='snapshots')
+    location = models.ForeignKey(Location, on_delete=models.CASCADE,
+                                related_name='snapshots')
     avail_bikes = models.IntegerField()
     free_stands = models.IntegerField()
     timestamp = models.DateTimeField()
     weekend = models.BooleanField()
 
     def save(self, *args, **kwargs):
-        self.weekend = self.timestamp.weekday() in [6,7]
+        self.weekend = self.timestamp.weekday() in [5,6]
         super().save(*args, **kwargs)
 
 class Stat(models.Model):
 
 
-    location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='stats')
+    location = models.ForeignKey(Location, on_delete=models.CASCADE,
+                                related_name='stats')
     avail_bikes_mean = models.FloatField(null=True)
     free_stands_mean = models.FloatField(null=True)
     avail_bikes_sd = models.FloatField(null=True)

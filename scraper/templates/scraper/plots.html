@@ -1,21 +1,8 @@
 {% extends "base.html" %}
 {% block charts %}
-  {% include "_map.html" %}
   {% if scatter %}
     <div style="width:500;height:500">
       {{ scatter|safe }}
-    </div>
-  {% endif %}
-
-  {% if box_wd %}
-    <div style="width:500;height:500">
-      {{ box_wd|safe }}
-    </div>
-  {% endif %}
-
-  {% if box_we %}
-    <div style="width:500;height:500">
-      {{ box_we|safe }}
     </div>
   {% endif %}
 {% endblock charts %}

@@ -37,17 +37,17 @@
               <th>Charts</th>
             </thead>
             <tbody>
-              {% for location in locations %}
+              {% for loc in locations %}
                 <tr>
-                  <td>{{location.name}}</td>
-                  <td>{{location.snapshots.last.avail_bikes}}</td>
-                  <td>{{location.snapshots.last.free_stands}}</td>
+                  <td>{{loc.name}}</td>
+                  <td>{{loc.snapshots.last.avail_bikes}}</td>
+                  <td>{{loc.snapshots.last.free_stands}}</td>
                   <td>
-                    <a href="{% url 'scraper:snapshot_plots' slug=location.slug %}">
+                    <a href="{% url 'scraper:snapshot_plots' slug=loc.slug %}">
                       Real-time</a>,&nbsp
                     <span>Monthly:&nbsp</span>
-                    {% for stat in location.stats.all%}
-                      <a href="{% url 'scraper:stat_plots' slug=location.slug year=stat.month|date:'Y' month=stat.month|date:'m' %}">
+                    {% for month in months %}
+                      <a href="{% url 'scraper:stat_plots' slug=loc.slug year=month|date:'Y' month=month|date:'m' %}">
                           {{stat.month|date:'M Y'}}</a>&nbsp
                     {% endfor %}
                   </td>
@@ -58,9 +58,16 @@
           <br>
           <p>Last update: {{locations.0.snapshots.last.timestamp}}</p>
         </div>
-          <div class="col-md-6 col-sm-12">
-            {% block charts %}{% endblock charts %}
-          </div>
+        <div class="col-md-6 col-sm-12">
+          {% if location %}
+            {% include "_map.html" %}
+          {% endif %}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+          {% block charts %}{% endblock charts %}
+        </div>
       </div>
     </div>
   </body>

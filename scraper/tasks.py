@@ -1,5 +1,6 @@
 import requests
 import pandas as pd
+import time
 
 from bs4 import BeautifulSoup
 from celery.task.schedules import crontab
@@ -7,6 +8,7 @@ from celery.decorators import periodic_task
 from datetime import datetime, timedelta, date
 from django.db.models import Avg
 from pytz import timezone
+from django.db.utils import OperationalError
 
 from scraper.models import Snapshot, Location, Stat
 
@@ -51,9 +53,12 @@ def take_snapshot():
             location = loc,
             avail_bikes = single['Bikes'],
             free_stands = single['Free stands'],
-            timestamp = datetime.now(tz=timezone('Europe/Warsaw'))
+            timestamp = datetime.now()
         )
+        time.sleep(0.25)
         obj.save()
+
+
         print('Time: ' +  str(obj.timestamp))
         print('----------')
 

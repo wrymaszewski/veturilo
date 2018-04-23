@@ -15,6 +15,7 @@ from datetime import datetime, timedelta, date
 from django.db.models import Avg
 
 from scraper.models import Snapshot, Location, Stat
+import datetime
 
 
 def scrape(url='www.veturilo.waw.pl/mapa-stacji/'):
@@ -118,9 +119,7 @@ if __name__ == '__main__':
     #     snapshot.save()
     #     print(snapshot.location.name +  ' changed')
     # print('-----------------')
-    # Stat.objects.all().delete()
-    # print('Stats deleted')
-    # reduce_data()
+
     # locs = Location.objects.all()
     # for loc in locs:
     #     loc.save()
@@ -134,5 +133,13 @@ if __name__ == '__main__':
     #     stat.save()
     #     print(stat.location.name)
 
-    # snap = Snapshot.objects.first()
-    # print(snap.timestamp.weekday())
+    snaps = Snapshot.objects.all()
+    i=0
+    for s in snaps:
+        i += 1
+        s.save()
+        print('snap saved' + str(i))
+        print('-----------')
+    Stat.objects.all().delete()
+    print('Stats deleted')
+    reduce_data()
