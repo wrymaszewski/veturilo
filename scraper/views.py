@@ -1,12 +1,10 @@
-import numpy as np
 import time
 import pandas as pd
-import seaborn as sns
 import datetime
 import calendar
+
 import plotly.offline as opy
 import plotly.graph_objs as go
-
 
 from django.shortcuts import render
 from .models import Snapshot, Location, Stat

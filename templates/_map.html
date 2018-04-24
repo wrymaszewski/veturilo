@@ -1,11 +1,11 @@
 {# GoogleMaps API#}
 {% load scraper_filters %}
 <div class="map-section">
-  <div id="map" style="width: 400px; height: 400px;"></div>
+  <div id="map"></div>
 </div>
 <script>
  function initMap() {
-   var uluru = {lat: {{location.coordinates|get_lat}}, lng: {{location.coordinates|get_lng}}};
+   var uluru = {lat: {{location.coordinates|get_coord}}, lng: {{location.coordinates|get_coord:'lng'}}};
    var map = new google.maps.Map(document.getElementById('map'), {
      zoom: 16,
      center: uluru
