@@ -2,6 +2,7 @@ import time
 import pandas as pd
 import datetime
 import calendar
+from pytz import timezone
 
 import plotly.offline as opy
 import plotly.graph_objs as go
@@ -18,6 +19,24 @@ def get_months(location):
         if stat.month:
             months.add(stat.month)
     return sorted(list(months))
+
+def correct_time(dtime):
+    """
+    Plotly only shows dates in UTC. It is a know issue. This function
+    extracts the hourly difference between UTC and Warsaw time and corrects
+    the datetime for plotting.
+    """
+    now = datetime.datetime.now(tz=timezone('Europe/Warsaw'))
+    diff_str = str(now).split('+')[1]
+    diff = int(diff_str.split(':')[0])
+    delta = datetime.timedelta(hours = diff)
+    if type(dtime) is datetime.time:
+        # if time (stats)
+        comb = datetime.datetime.combine(now, dtime) + delta
+        return comb.time()
+    else:
+        # if datetime (snapshots)
+        return dtime + delta
 
 def draw_scatter(df, sd=False, weekend=None):
     """
@@ -90,7 +109,8 @@ def draw_scatter(df, sd=False, weekend=None):
     div = opy.plot(
         figure,
         auto_open = False,
-        output_type = 'div'
+        output_type = 'div',
+        link_text='Export'
     )
 
     return div
@@ -102,12 +122,12 @@ class SnapshotPlots(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-
+        zone = timezone('Europe/Warsaw')
         #### plotting from snapshots ####
         snapshots = (Snapshot.objects
                         .filter(location__slug = self.kwargs.get('slug'))
-                        # .filter(timestamp__gte = datetime.datetime.now()
-                        #             -datetime.timedelta(hours=24))
+                        .filter(timestamp__gte = datetime.datetime.now(tz=zone)
+                                    -datetime.timedelta(hours=72))
                         .select_related()
                     )
         lst=[]
@@ -119,6 +139,7 @@ class SnapshotPlots(TemplateView):
             ])
         cols = ['avail_bikes', 'free_stands', 'time']
         df = pd.DataFrame(lst, columns=cols)
+        df['time'] = df['time'].apply(lambda x: correct_time(x))
         df.sort_values('time', inplace=True)
 
         locations = Location.objects.select_related()
@@ -169,6 +190,7 @@ class StatPlots(TemplateView):
             'weekend'
         ]
         df = pd.DataFrame(lst, columns=cols)
+        df['time'] = df['time'].apply(lambda x: correct_time(x))
         df['time'] = df['time'].apply(lambda x: x.isoformat(timespec='minutes'))
         df.sort_values('time', inplace=True)
 
