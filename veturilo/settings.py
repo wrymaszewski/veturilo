@@ -25,7 +25,7 @@ SECRET_KEY = 'o$+rk-tt-r%u4_8jptpq(q86_bpl5@899ddq9r4im_zj1xmpn9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,9 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'kombu.transport.django',
+    # 'kombu.transport.django',
     'location_field.apps.DefaultConfig',
-    'django_filters',
     'djcelery',
     'scraper',
 ]
@@ -127,7 +126,10 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
-BROKER_URL = "django://" # tell kombu to use the Django database as the message queue
+# BROKER_URL = "django://" # tell kombu to use the Django database as the message queue
+
+# for production
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 import djcelery
 djcelery.setup_loader()

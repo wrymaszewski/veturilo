@@ -1,1 +1,1 @@
-web: gunicorn veturilo-stats.wsgi --log-file -
+web: gunicorn veturilo.wsgi --log-file -
