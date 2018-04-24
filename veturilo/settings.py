@@ -131,3 +131,7 @@ BROKER_URL = "django://" # tell kombu to use the Django database as the message 
 
 import djcelery
 djcelery.setup_loader()
+
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
