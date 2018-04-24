@@ -45,11 +45,13 @@
                   <td>
                     <a href="{% url 'scraper:snapshot_plots' slug=loc.slug %}">
                       Real-time</a>,&nbsp
-                    <span>Monthly:&nbsp</span>
-                    {% for month in months %}
-                      <a href="{% url 'scraper:stat_plots' slug=loc.slug year=month|date:'Y' month=month|date:'m' %}">
-                          {{month|date:'M Y'}}</a>&nbsp
-                    {% endfor %}
+                    {% if months %}
+                      <span>Monthly:&nbsp</span>
+                      {% for month in months %}
+                        <a href="{% url 'scraper:stat_plots' slug=loc.slug year=month|date:'Y' month=month|date:'m' %}">
+                            {{month|date:'M Y'}}</a>&nbsp
+                      {% endfor %}
+                    {% endif %}
                   </td>
                 </tr>
               {% endfor %}
