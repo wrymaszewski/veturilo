@@ -112,7 +112,7 @@ def reduce_data():
         month = last_month,
         weekend = weekend
         )
-        print(name + ' calculated' + 'weekend: ' + str(weekend))
+        print(name + ' calculated' + ' --weekend: ' + str(weekend))
 
 if __name__ == '__main__':
     # for snapshot in Snapshot.objects.select_related():
@@ -133,13 +133,20 @@ if __name__ == '__main__':
     #     stat.save()
     #     print(stat.location.name)
 
+    print('Collecting snapshots')
     snaps = Snapshot.objects.all()
+    print('Snapshots collected, applying modifications')
     i=0
+    length = len(snaps)
     for s in snaps:
         i += 1
-        s.save()
-        print('snap saved' + str(i))
-        print('-----------')
+        print(i)
+        if i>35000:
+            s.save()
+            print('snap saved ' + str(i)+'/'+str(length))
+            print('-----------')
+    print('Deleting stats')
     Stat.objects.all().delete()
-    print('Stats deleted')
+    print('Stats deleted, reducing data')
     reduce_data()
+    print('Data reduced')

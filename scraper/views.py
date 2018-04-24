@@ -1,4 +1,5 @@
 import numpy as np
+import time
 import pandas as pd
 import seaborn as sns
 import datetime
@@ -12,6 +13,89 @@ from .models import Snapshot, Location, Stat
 from django.views.generic import TemplateView
 # Create your views here.
 
+def get_months(location):
+    """Getting months for statistics from a given Location object"""
+    months = set()
+    for stat in location.stats.all():
+        if stat.month:
+            months.add(stat.month)
+    return sorted(list(months))
+
+def draw_scatter(df, sd=False, weekend=None):
+    """
+    Draws scatterplots based on the args
+    df -> Pandas DataFrame
+    sd -> bool (optional)
+    weekend -> bool (optional)
+    """
+
+    if weekend is None:
+        dat = df
+    elif weekend:
+        dat = df[df['weekend']==True]
+    else:
+        dat = df[df['weekend']==False]
+
+    if not sd:
+        dat['free_stands_sd'] = dat['free_stands']
+        dat['avail_bikes_sd'] = dat['avail_bikes']
+
+    # available bikes
+    trace1 = go.Scatter(
+        x = dat['time'],
+        y = dat['avail_bikes'],
+        error_y = dict(
+            type = 'data',
+            array = dat['free_stands_sd'],
+            visible=sd),
+        mode = 'lines',
+        name = 'Available Bikes',
+    )
+
+    # free stands
+    trace2 = go.Scatter(
+        x = dat['time'],
+        y = dat['free_stands'],
+        error_y = dict(
+            type = 'data',
+            array = dat['free_stands_sd'],
+            visible=sd),
+        mode = 'lines',
+        name = 'Free Stands',
+    )
+
+    data = go.Data([trace1, trace2])
+
+    layout = go.Layout(
+        xaxis = {'title':'Time'},
+        yaxis = {'title':'Number'},
+        legend = dict(
+            x=0,
+            y=1,
+            traceorder='normal',
+            font=dict(
+                family='sans-serif',
+                size=12,
+                color='#000'
+            ),
+            bgcolor='#E2E2E2',
+            bordercolor='#FFFFFF',
+            borderwidth=2
+        )
+    )
+
+    figure = go.Figure(
+        data = data,
+        layout = layout
+    )
+
+    div = opy.plot(
+        figure,
+        auto_open = False,
+        output_type = 'div'
+    )
+
+    return div
 
 class SnapshotPlots(TemplateView):
 
@@ -24,67 +108,27 @@ class SnapshotPlots(TemplateView):
         #### plotting from snapshots ####
         snapshots = (Snapshot.objects
                         .filter(location__slug = self.kwargs.get('slug'))
-                        .filter(timestamp__gte = datetime.datetime.now()
-                                    -datetime.timedelta(hours=24))
+                        # .filter(timestamp__gte = datetime.datetime.now()
+                        #             -datetime.timedelta(hours=24))
                         .select_related()
                     )
-        location_name = snapshots[0].location.name
         lst=[]
         for obj in snapshots:
             lst.append([
                 obj.avail_bikes,
                 obj.free_stands,
                 obj.timestamp,
-                obj.weekend
             ])
-        cols = ['avail_bikes', 'free_stands', 'timestamp', 'weekend']
+        cols = ['avail_bikes', 'free_stands', 'time']
         df = pd.DataFrame(lst, columns=cols)
-        df['hour'] = df['timestamp'].dt.hour
-        df.sort_values('timestamp', inplace=True)
-
-        # scatterplot
-        scatter_trace1 = go.Scatter(
-            x = df['timestamp'],
-            y = df['avail_bikes'],
-            mode = 'lines',
-            name = 'Available Bicycles',
-        )
-
-        scatter_trace2 = go.Scatter(
-            x = df['timestamp'],
-            y = df['free_stands'],
-            mode = 'lines',
-            name = 'Free Stands',
-        )
-
-        scatter_data = go.Data([scatter_trace1, scatter_trace2])
-        scatter_layout = go.Layout(
-            title = location_name,
-            xaxis = {'title':'Time'},
-            yaxis = {'title':'Number'}
-        )
-        scatter_figure = go.Figure(
-            data = scatter_data,
-            layout = scatter_layout
-        )
-        scatter_div = opy.plot(
-            scatter_figure,
-            auto_open = False,
-            output_type = 'div'
-        )
+        df.sort_values('time', inplace=True)
 
         locations = Location.objects.select_related()
         location = snapshots[0].location
         context['locations'] = locations
-
-        months = set()
-        for stat in location.stats.all():
-            if stat.month:
-                months.add(stat.month)
-        months_list = list(months)
-        context['months'] = sorted(months_list)
+        context['months'] = get_months(location)
         context['location'] = location
-        context['scatter'] = scatter_div
+        context['scatter'] = draw_scatter(df)
         return context
 
 
@@ -106,8 +150,6 @@ class StatPlots(TemplateView):
                     .filter(month__exact = datetime.date(year, month, day))
                     .select_related()
                 )
-        location_name = stat[0].location.name
-
         lst=[]
         for obj in stat:
             lst.append([
@@ -120,8 +162,8 @@ class StatPlots(TemplateView):
                 obj.weekend
             ])
         cols = [
-            'avail_bikes_mean',
-            'free_stands_mean',
+            'avail_bikes',
+            'free_stands',
             'avail_bikes_sd',
             'free_stands_sd',
             'time',
@@ -129,93 +171,13 @@ class StatPlots(TemplateView):
             'weekend'
         ]
         df = pd.DataFrame(lst, columns=cols)
+        df['time'] = df['time'].apply(lambda x: x.isoformat(timespec='minutes'))
         df.sort_values('time', inplace=True)
 
-
-        # plots for weekdays
-        trace1 = go.Scatter(
-            x = df[df['weekend']==False]['time'],
-            y = df[df['weekend']==False]['avail_bikes_mean'],
-            error_y = dict(
-                type = 'data',
-                array = df['avail_bikes_sd'],
-                visible=True
-            ),
-            mode = 'lines+markers',
-            name = 'Available Bikes',
-        )
-        trace2 = go.Scatter(
-            x = df[df['weekend']==False]['time'],
-            y = df[df['weekend']==False]['free_stands_mean'],
-            error_y = dict(
-                type = 'data',
-                array = df['free_stands_sd'],
-                visible=True
-            ),
-            mode = 'lines+markers',
-            name = 'Free Stands',
-        )
-
-        data = go.Data([trace1, trace2])
-
-        layout = go.Layout(
-            title = location_name,
-            xaxis = {'title':'Time'},
-            yaxis = {'title':'Number'}
-        )
-        figure = go.Figure(
-            data = data,
-            layout = layout
-        )
-        stat_wd_div = opy.plot(
-            figure,
-            auto_open = False,
-            output_type = 'div'
-        )
-
-        # plots for weekends
-        trace1 = go.Scatter(
-            x = df[df['weekend']]['time'],
-            y = df[df['weekend']]['avail_bikes_mean'],
-            error_y = dict(
-                type = 'data',
-                array = df['avail_bikes_sd'],
-                visible=True
-            ),
-            mode = 'lines+markers',
-            name = 'Available Bikes',
-        )
-        trace2 = go.Scatter(
-            x = df[df['weekend']]['time'],
-            y = df[df['weekend']]['free_stands_mean'],
-            error_y = dict(
-                type = 'data',
-                array = df['free_stands_sd'],
-                visible=True
-            ),
-            mode = 'lines+markers',
-            name = 'Free Stands',
-        )
-
-        data = go.Data([trace1, trace2])
-
-        layout = go.Layout(
-            title = location_name,
-            xaxis = {'title':'Time'},
-            yaxis = {'title':'Number'}
-        )
-        figure = go.Figure(
-            data = data,
-            layout = layout
-        )
-        stat_we_div = opy.plot(
-            figure,
-            auto_open = False,
-            output_type = 'div'
-        )
-
+        location = stat[0].location
+        context['months'] = get_months(location)
         context['locations'] = Location.objects.select_related()
-        context['location'] = stat[0].location
-        context['stat_wd'] = stat_wd_div
-        context['stat_we'] = stat_we_div
+        context['location'] = location
+        context['stat_wd'] = draw_scatter(df, weekend=False, sd=True)
+        context['stat_we'] = draw_scatter(df, weekend=True, sd=True)
         return context

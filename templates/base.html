@@ -48,7 +48,7 @@
                     <span>Monthly:&nbsp</span>
                     {% for month in months %}
                       <a href="{% url 'scraper:stat_plots' slug=loc.slug year=month|date:'Y' month=month|date:'m' %}">
-                          {{stat.month|date:'M Y'}}</a>&nbsp
+                          {{month|date:'M Y'}}</a>&nbsp
                     {% endfor %}
                   </td>
                 </tr>
