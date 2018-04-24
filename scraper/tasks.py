@@ -53,7 +53,7 @@ def take_snapshot():
             location = loc,
             avail_bikes = single['Bikes'],
             free_stands = single['Free stands'],
-            timestamp = datetime.now()
+            timestamp = datetime.now(tz = timezone('Europe/Warsaw'))
         )
         time.sleep(0.25)
         obj.save()
