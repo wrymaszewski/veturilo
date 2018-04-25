@@ -55,7 +55,7 @@ def take_snapshot():
             free_stands = single['Free stands'],
             timestamp = datetime.now(tz = timezone('Europe/Warsaw'))
         )
-        time.sleep(0.25)
+        # time.sleep(0.25)
         obj.save()
 
 
