@@ -125,7 +125,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "www", "static")
 
 # BROKER_URL = "django://" # tell kombu to use the Django database as the message queue
 # BROKER_POOL_LIMIT = 3
