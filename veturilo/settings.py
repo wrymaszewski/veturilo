@@ -25,7 +25,7 @@ SECRET_KEY = 'o$+rk-tt-r%u4_8jptpq(q86_bpl5@899ddq9r4im_zj1xmpn9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['eb-django-app-dev.elasticbeanstalk.com']
 
 
 # Application definition
@@ -123,20 +123,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static")
 
 # BROKER_URL = "django://" # tell kombu to use the Django database as the message queue
-BROKER_POOL_LIMIT = 3
-BROKER_URL = 'amqp://lxsefutc:43-38oaUJ23B0RQg2BXNKfabshftudlx@hound.rmq.cloudamqp.com/lxsefutc'
+# BROKER_POOL_LIMIT = 3
+# BROKER_URL = 'amqp://lxsefutc:43-38oaUJ23B0RQg2BXNKfabshftudlx@hound.rmq.cloudamqp.com/lxsefutc'
 
 # for production
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-import djcelery
-djcelery.setup_loader()
-
-import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#
+# import djcelery
+# djcelery.setup_loader()
+#
+# import dj_database_url
+# db_from_env = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(db_from_env)
