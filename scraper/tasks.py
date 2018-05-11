@@ -4,7 +4,7 @@ import time
 
 from bs4 import BeautifulSoup
 from celery.task.schedules import crontab
-from celery.decorators import periodic_task
+from celery.task import periodic_task
 from datetime import datetime, timedelta, date
 from django.db.models import Avg
 from pytz import timezone
@@ -111,3 +111,13 @@ def reduce_data():
         month = last_month
         )
         print(name + ' calculated')
+
+
+#  Test task
+import logging
+@periodic_task(run_every=timedelta(minutes=1))
+def sample_periodic_task():
+    logger.info("Start task")
+    now = datetime.now()
+    result = now.day + now.minute
+    logger.info("Task finished: result = %i" % result)
