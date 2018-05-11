@@ -153,13 +153,13 @@ djcelery.setup_loader()
 # CELERY_SEND_EVENTS = False
 
 # settings/stage.py
-import urllib.parse.quote as quote
+from urllib import parse
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 
 BROKER_URL = 'sqs://{0}:{1}@'.format(
-    quote(AWS_ACCESS_KEY_ID, safe=''),
-    quote(AWS_SECRET_ACCESS_KEY, safe='')
+    parse.quote(AWS_ACCESS_KEY_ID, safe=''),
+    parse.quote(AWS_SECRET_ACCESS_KEY, safe='')
 )
 BROKER_TRANSPORT_OPTIONS = {
     'region': 'eu-central-1',
