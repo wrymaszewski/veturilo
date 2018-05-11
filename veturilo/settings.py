@@ -130,7 +130,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "www", "static")
 # BROKER_URL = "django://" # tell kombu to use the Django database as the message queue
 # BROKER_POOL_LIMIT = 3
 # BROKER_URL = 'amqp://lxsefutc:43-38oaUJ23B0RQg2BXNKfabshftudlx@hound.rmq.cloudamqp.com/lxsefutc'
-
+BROKER_URL = os.environ['BROKER_URL']  
 # for production
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #
@@ -140,3 +140,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, "www", "static")
 # import dj_database_url
 # db_from_env = dj_database_url.config(conn_max_age=500)
 # DATABASES['default'].update(db_from_env)
+
+# Celery settings for django
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+CELERY_SEND_EVENTS = False
