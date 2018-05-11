@@ -130,7 +130,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, "www", "static")
 # BROKER_URL = "django://" # tell kombu to use the Django database as the message queue
 # BROKER_POOL_LIMIT = 3
 # BROKER_URL = 'amqp://lxsefutc:43-38oaUJ23B0RQg2BXNKfabshftudlx@hound.rmq.cloudamqp.com/lxsefutc'
-BROKER_URL = os.environ['BROKER_URL']
+# BROKER_URL = os.environ['BROKER_URL']
+BROKER_URL = 'amqp://gwtijsqi:VRSn41eLfTzR9E_PzhtWJG53KfZr4Sg5@hound.rmq.cloudamqp.com/gwtijsqi'
+
 # for production
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #
