@@ -14,7 +14,6 @@ chardet==3.0.4
 colorama==0.3.7
 decorator==4.3.0
 Django==2.0.4
-django-celery==3.2.2
 django-celery-beat==1.0.1
 django-celery-results==1.0.1
 django-location-field==2.0.3
