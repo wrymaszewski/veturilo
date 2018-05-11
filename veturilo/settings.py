@@ -23,7 +23,7 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = 'o$+rk-tt-r%u4_8jptpq(q86_bpl5@899ddq9r4im_zj1xmpn9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -130,12 +130,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, "www", "static")
 # BROKER_URL = "django://" # tell kombu to use the Django database as the message queue
 # BROKER_POOL_LIMIT = 3
 # BROKER_URL = 'amqp://lxsefutc:43-38oaUJ23B0RQg2BXNKfabshftudlx@hound.rmq.cloudamqp.com/lxsefutc'
-BROKER_URL = os.environ['BROKER_URL']  
+BROKER_URL = os.environ['BROKER_URL']
 # for production
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #
-# import djcelery
-# djcelery.setup_loader()
+import djcelery
+djcelery.setup_loader()
 #
 # import dj_database_url
 # db_from_env = dj_database_url.config(conn_max_age=500)
