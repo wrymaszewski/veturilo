@@ -4,7 +4,7 @@ import time
 
 from bs4 import BeautifulSoup
 from celery.task.schedules import crontab
-from celery.task import periodic_task
+from celery.decorators import periodic_task
 from datetime import datetime, timedelta, date
 from django.db.models import Avg
 from pytz import timezone

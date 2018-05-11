@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'kombu.transport.django',
+    'kombu.transport.django',
     'location_field.apps.DefaultConfig',
     'djcelery',
     'scraper',
@@ -132,12 +132,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, "www", "static")
 # BROKER_URL = 'amqp://lxsefutc:43-38oaUJ23B0RQg2BXNKfabshftudlx@hound.rmq.cloudamqp.com/lxsefutc'
 # BROKER_URL = os.environ['BROKER_URL']
 # BROKER_URL = 'amqp://gwtijsqi:VRSn41eLfTzR9E_PzhtWJG53KfZr4Sg5@hound.rmq.cloudamqp.com/gwtijsqi'
-BROKER_URL = 'sqs.eu-central-1.amazonaws.com/456672763466/veturilo_tasks@'
+# BROKER_URL = 'sqs.eu-central-1.amazonaws.com/456672763466/veturilo_tasks@'
 # for production
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #
-import djcelery
-djcelery.setup_loader()
+# import djcelery
+# djcelery.setup_loader()
 #
 # import dj_database_url
 # db_from_env = dj_database_url.config(conn_max_age=500)
