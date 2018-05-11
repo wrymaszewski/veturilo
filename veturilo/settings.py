@@ -131,8 +131,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, "www", "static")
 # BROKER_POOL_LIMIT = 3
 # BROKER_URL = 'amqp://lxsefutc:43-38oaUJ23B0RQg2BXNKfabshftudlx@hound.rmq.cloudamqp.com/lxsefutc'
 # BROKER_URL = os.environ['BROKER_URL']
-BROKER_URL = 'amqp://gwtijsqi:VRSn41eLfTzR9E_PzhtWJG53KfZr4Sg5@hound.rmq.cloudamqp.com/gwtijsqi'
-
+# BROKER_URL = 'amqp://gwtijsqi:VRSn41eLfTzR9E_PzhtWJG53KfZr4Sg5@hound.rmq.cloudamqp.com/gwtijsqi'
+BROKER_URL = 'sqs.eu-central-1.amazonaws.com/456672763466/veturilo_tasks@'
 # for production
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #
@@ -144,10 +144,27 @@ djcelery.setup_loader()
 # DATABASES['default'].update(db_from_env)
 
 # Celery settings for django
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_ACCEPT_CONTENT = ['json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
+#
+# CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+# CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+# CELERY_SEND_EVENTS = False
 
-CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
-CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
-CELERY_SEND_EVENTS = False
+# settings/stage.py
+
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+
+BROKER_URL = 'sqs://{0}:{1}@'.format(
+    urllib.quote(AWS_ACCESS_KEY_ID, safe=''),
+    urllib.quote(AWS_SECRET_ACCESS_KEY, safe='')
+)
+BROKER_TRANSPORT_OPTIONS = {
+    'region': 'eu-central-1',
+    'polling_interval': 3,
+    'visibility_timeout': 3600,
+}
+BROKER_TRANSPORT_OPTIONS['queue_name_prefix'] = 'repricer-stage-'
+CELERY_SEND_TASK_ERROR_EMAILS = True
