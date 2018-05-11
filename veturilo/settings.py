@@ -154,10 +154,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, "www", "static")
 
 # settings/stage.py
 from urllib import parse
-# AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-# AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-AWS_ACCESS_KEY_ID = 'AKIAJ7JHN2LCX37CAO7A'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 
 BROKER_URL = 'sqs://{0}:{1}@'.format(
     parse.quote(AWS_ACCESS_KEY_ID, safe=''),
