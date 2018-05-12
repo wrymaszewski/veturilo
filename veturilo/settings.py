@@ -23,7 +23,7 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = 'o$+rk-tt-r%u4_8jptpq(q86_bpl5@899ddq9r4im_zj1xmpn9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -162,7 +162,7 @@ BROKER_URL = 'sqs://{0}:{1}@'.format(
     parse.quote(AWS_SECRET_ACCESS_KEY, safe='')
 )
 BROKER_TRANSPORT_OPTIONS = {
-    'region': 'eu-central-1',
+    'region': 'us-east-1',
     'polling_interval': 3,
     'visibility_timeout': 3600,
 }
