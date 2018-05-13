@@ -128,6 +128,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 BROKER_URL = "django://" # tell kombu to use the Django database as the message queue
-
+#
 import djcelery
 djcelery.setup_loader()
