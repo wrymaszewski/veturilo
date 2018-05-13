@@ -12,56 +12,56 @@ from django.db.utils import OperationalError
 
 from scraper.models import Snapshot, Location, Stat
 #
-#
-# def scrape(url='www.veturilo.waw.pl/mapa-stacji/'):
-#     """
-#     This function will extract the table from Veturilo website and create a
-#     pandas dataframe from it.
-#     """
-#     req = requests.get('https://' + url)
-#     table = BeautifulSoup(req.text).table
-#     dat=[]
-#     for row in table.find_all('tr'):
-#         cols = row.find_all('td')
-#         cols = [ele.text.strip() for ele in cols]
-#         dat.append([ele for ele in cols if ele])
-#
-#     cols = ['Location', 'Bikes', 'Stands', 'Free stands', 'Coords']
-#     df = pd.DataFrame(dat, columns=cols)
-#     df.dropna(inplace=True)
-#     return df
-#
-#
-# @periodic_task(run_every=crontab(minute='*/10'))
-# def take_snapshot():
-#     """
-#     Function that scrapes the veturilo website every 30 minutes and places
-#     the raw data in the DB.
-#     """
-#     df = scrape()
-#     for i in df.index:
-#         single = df.loc[i]
-#         # create or get locations
-#         loc, created = Location.objects.get_or_create(
-#                                 name=single['Location'],
-#                                 all_stands=single['Stands'],
-#                                 coordinates=single['Coords']
-#                                 )
-#         print('Location: ' + loc.name)
-#         # add a new snapshot
-#         obj = Snapshot(
-#             location = loc,
-#             avail_bikes = single['Bikes'],
-#             free_stands = single['Free stands'],
-#             timestamp = datetime.now(tz = timezone('Europe/Warsaw'))
-#         )
-#         # time.sleep(0.25)
-#         obj.save()
-#
-#
-#         print('Time: ' +  str(obj.timestamp))
-#         print('----------')
-#
+
+def scrape(url='www.veturilo.waw.pl/mapa-stacji/'):
+    """
+    This function will extract the table from Veturilo website and create a
+    pandas dataframe from it.
+    """
+    req = requests.get('https://' + url)
+    table = BeautifulSoup(req.text).table
+    dat=[]
+    for row in table.find_all('tr'):
+        cols = row.find_all('td')
+        cols = [ele.text.strip() for ele in cols]
+        dat.append([ele for ele in cols if ele])
+
+    cols = ['Location', 'Bikes', 'Stands', 'Free stands', 'Coords']
+    df = pd.DataFrame(dat, columns=cols)
+    df.dropna(inplace=True)
+    return df
+
+
+@periodic_task(run_every=crontab(minute='*/10'))
+def take_snapshot():
+    """
+    Function that scrapes the veturilo website every 30 minutes and places
+    the raw data in the DB.
+    """
+    df = scrape()
+    for i in df.index:
+        single = df.loc[i]
+        # create or get locations
+        loc, created = Location.objects.get_or_create(
+                                name=single['Location'],
+                                all_stands=single['Stands'],
+                                coordinates=single['Coords']
+                                )
+        print('Location: ' + loc.name)
+        # add a new snapshot
+        obj = Snapshot(
+            location = loc,
+            avail_bikes = single['Bikes'],
+            free_stands = single['Free stands'],
+            timestamp = datetime.now(tz = timezone('Europe/Warsaw'))
+        )
+        # time.sleep(0.25)
+        obj.save()
+
+
+        print('Time: ' +  str(obj.timestamp))
+        print('----------')
+
 #
 # @periodic_task(run_every=crontab(minute=0, hour=0))
 # def delete_old():
@@ -114,10 +114,10 @@ from scraper.models import Snapshot, Location, Stat
 #
 
 #  Test task
-import logging
-@periodic_task(run_every=timedelta(minutes=1))
-def sample_periodic_task():
-    logger.info("Start task")
-    now = datetime.now()
-    result = now.day + now.minute
-    logger.info("Task finished: result = %i" % result)
+# import logging
+# @periodic_task(run_every=timedelta(minutes=1))
+# def sample_periodic_task():
+#     logger.info("Start task")
+#     now = datetime.now()
+#     result = now.day + now.minute
+#     logger.info("Task finished: result = %i" % result)
