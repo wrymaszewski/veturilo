@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 'kombu.transport.django',
     'location_field.apps.DefaultConfig',
-    'djcelery',
+    # 'djcelery',
     'scraper',
 ]
 
@@ -144,27 +144,27 @@ STATIC_ROOT = os.path.join(BASE_DIR, "www", "static")
 # DATABASES['default'].update(db_from_env)
 
 # Celery settings for django
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-
-CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
-CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
-CELERY_SEND_EVENTS = False
+# CELERY_ACCEPT_CONTENT = ['json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
+#
+# CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+# CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+# CELERY_SEND_EVENTS = False
 
 # settings/stage.py
-from urllib import parse
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-
-BROKER_URL = 'sqs://{0}:{1}@'.format(
-    parse.quote(AWS_ACCESS_KEY_ID, safe=''),
-    parse.quote(AWS_SECRET_ACCESS_KEY, safe='')
-)
-BROKER_TRANSPORT_OPTIONS = {
-    'region': 'us-east-1',
-    'polling_interval': 3,
-    'visibility_timeout': 3600,
-}
-BROKER_TRANSPORT_OPTIONS['queue_name_prefix'] = 'repricer-stage-'
-CELERY_SEND_TASK_ERROR_EMAILS = True
+# from urllib import parse
+# AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+# AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+#
+# BROKER_URL = 'sqs://{0}:{1}@'.format(
+#     parse.quote(AWS_ACCESS_KEY_ID, safe=''),
+#     parse.quote(AWS_SECRET_ACCESS_KEY, safe='')
+# )
+# BROKER_TRANSPORT_OPTIONS = {
+#     'region': 'us-east-1',
+#     'polling_interval': 3,
+#     'visibility_timeout': 3600,
+# }
+# BROKER_TRANSPORT_OPTIONS['queue_name_prefix'] = 'repricer-stage-'
+# CELERY_SEND_TASK_ERROR_EMAILS = True
