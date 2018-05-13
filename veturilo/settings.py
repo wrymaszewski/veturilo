@@ -154,33 +154,33 @@ CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 CELERY_SEND_EVENTS = False
 #
 # # settings/stage.py
-# from urllib import parse
-# AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-# AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-#
-# BROKER_URL = 'sqs://{0}:{1}@'.format(
-#     parse.quote(AWS_ACCESS_KEY_ID, safe=''),
-#     parse.quote(AWS_SECRET_ACCESS_KEY, safe='')
-# )
-# BROKER_TRANSPORT_OPTIONS = {
-#     'region': 'us-east-1',
-#     'polling_interval': 3,
-#     'visibility_timeout': 3600,
-# }
-# BROKER_TRANSPORT_OPTIONS['queue_name_prefix'] = 'repricer-stage-'
-# CELERY_SEND_TASK_ERROR_EMAILS = True
-#
-# CELERY_BROKER_TRANSPORT = 'sqs'
-# CELERY_BROKER_USER = AWS_ACCESS_KEY_ID
-# CELERY_BROKER_PASSWORD = AWS_SECRET_ACCESS_KEY_US
-# CELERY_WORKER_STATE_DB = '/var/run/celery/worker.db'
-# CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-# CELERY_WORKER_PREFETCH_MULTIPLIER = 0
-#
-# CELERY_DEFAULT_QUEUE = 'celery'
-# CELERY_QUEUES = {
-#     CELERY_DEFAULT_QUEUE: {
-#         'exchange': CELERY_DEFAULT_QUEUE,
-#         'binding_key': CELERY_DEFAULT_QUEUE,
-#     }
-# }
+from urllib import parse
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+
+BROKER_URL = 'sqs://{0}:{1}@'.format(
+    parse.quote(AWS_ACCESS_KEY_ID, safe=''),
+    parse.quote(AWS_SECRET_ACCESS_KEY, safe='')
+)
+BROKER_TRANSPORT_OPTIONS = {
+    'region': 'us-east-1',
+    'polling_interval': 3,
+    'visibility_timeout': 3600,
+}
+BROKER_TRANSPORT_OPTIONS['queue_name_prefix'] = 'repricer-stage-'
+CELERY_SEND_TASK_ERROR_EMAILS = True
+
+CELERY_BROKER_TRANSPORT = 'sqs'
+CELERY_BROKER_USER = AWS_ACCESS_KEY_ID
+CELERY_BROKER_PASSWORD = AWS_SECRET_ACCESS_KEY_US
+CELERY_WORKER_STATE_DB = '/var/run/celery/worker.db'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+CELERY_WORKER_PREFETCH_MULTIPLIER = 0
+
+CELERY_DEFAULT_QUEUE = 'celery'
+CELERY_QUEUES = {
+    CELERY_DEFAULT_QUEUE: {
+        'exchange': CELERY_DEFAULT_QUEUE,
+        'binding_key': CELERY_DEFAULT_QUEUE,
+    }
+}
