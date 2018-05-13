@@ -154,61 +154,61 @@ CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 CELERY_SEND_EVENTS = False
 #
 # # settings/stage.py
-# from urllib import parse
-# AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-# AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-# AWS_SECRET_ACCESS_KEY_US = os.getenv('AWS_SECRET_ACCESS_KEY_US')
-#
-# BROKER_URL = 'sqs://{0}:{1}@'.format(
-#     parse.quote(AWS_ACCESS_KEY_ID, safe=''),
-#     parse.quote(AWS_SECRET_ACCESS_KEY, safe='')
-# )
-# BROKER_TRANSPORT_OPTIONS = {
-#     'region': 'us-east-1',
-#     'polling_interval': 3,
-#     'visibility_timeout': 3600,
-# }
-# BROKER_TRANSPORT_OPTIONS['queue_name_prefix'] = 'repricer-stage-'
-# CELERY_SEND_TASK_ERROR_EMAILS = True
-#
-# CELERY_BROKER_TRANSPORT = 'sqs'
-# CELERY_BROKER_USER = AWS_ACCESS_KEY_ID
-# CELERY_BROKER_PASSWORD = AWS_SECRET_ACCESS_KEY_US
-# CELERY_WORKER_STATE_DB = '/var/run/celery/worker.db'
-# CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-# CELERY_WORKER_PREFETCH_MULTIPLIER = 0
-#
-# CELERY_DEFAULT_QUEUE = 'celery'
-# CELERY_QUEUES = {
-#     CELERY_DEFAULT_QUEUE: {
-#         'exchange': CELERY_DEFAULT_QUEUE,
-#         'binding_key': CELERY_DEFAULT_QUEUE,
-#     }
-# }
+from urllib import parse
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_SECRET_ACCESS_KEY_US = os.getenv('AWS_SECRET_ACCESS_KEY_US')
 
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+BROKER_URL = 'sqs://{0}:{1}@'.format(
+    parse.quote(AWS_ACCESS_KEY_ID, safe=''),
+    parse.quote(AWS_SECRET_ACCESS_KEY, safe='')
+)
+BROKER_TRANSPORT_OPTIONS = {
+    'region': 'us-east-1',
+    'polling_interval': 3,
+    'visibility_timeout': 3600,
+}
+BROKER_TRANSPORT_OPTIONS['queue_name_prefix'] = 'repricer-stage-'
+CELERY_SEND_TASK_ERROR_EMAILS = True
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ['RDS_DB_NAME'],
-        'USER': os.environ['RDS_USERNAME'],
-        'PASSWORD': os.environ['RDS_PASSWORD'],
-        'HOST': os.environ['RDS_HOSTNAME'],
-        'PORT': os.environ['RDS_PORT'],
+CELERY_BROKER_TRANSPORT = 'sqs'
+CELERY_BROKER_USER = AWS_ACCESS_KEY_ID
+CELERY_BROKER_PASSWORD = AWS_SECRET_ACCESS_KEY_US
+CELERY_WORKER_STATE_DB = '/var/run/celery/worker.db'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+CELERY_WORKER_PREFETCH_MULTIPLIER = 0
+
+CELERY_DEFAULT_QUEUE = 'celery'
+CELERY_QUEUES = {
+    CELERY_DEFAULT_QUEUE: {
+        'exchange': CELERY_DEFAULT_QUEUE,
+        'binding_key': CELERY_DEFAULT_QUEUE,
     }
 }
-
-CELERY_TASK_SERIALIZER='json'
-CELERY_RESULT_BACKEND = 'django-db'
-CELERY_BROKER_URL = 'sqs://'
-CELERY_BROKER_TRANSPORT_OPTIONS = {
-    "region": "us-west-2",
-    'queue_name_prefix': 'myapp-something-',
-    'visibility_timeout': 360,
-    'polling_interval': 1
-}
-
-# Use django-ses for email
-EMAIL_BACKEND = 'django_ses.SESBackend'
-AWS_SES_REGION_ENDPOINT = 'email.us-west-2.amazonaws.com'
+#
+# SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+#
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ['RDS_DB_NAME'],
+#         'USER': os.environ['RDS_USERNAME'],
+#         'PASSWORD': os.environ['RDS_PASSWORD'],
+#         'HOST': os.environ['RDS_HOSTNAME'],
+#         'PORT': os.environ['RDS_PORT'],
+#     }
+# }
+#
+# CELERY_TASK_SERIALIZER='json'
+# CELERY_RESULT_BACKEND = 'django-db'
+# CELERY_BROKER_URL = 'sqs://'
+# CELERY_BROKER_TRANSPORT_OPTIONS = {
+#     "region": "us-west-2",
+#     'queue_name_prefix': 'myapp-something-',
+#     'visibility_timeout': 360,
+#     'polling_interval': 1
+# }
+#
+# # Use django-ses for email
+# EMAIL_BACKEND = 'django_ses.SESBackend'
+# AWS_SES_REGION_ENDPOINT = 'email.us-west-2.amazonaws.com'
