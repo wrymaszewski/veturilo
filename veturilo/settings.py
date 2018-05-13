@@ -136,8 +136,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, "www", "static")
 # for production
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #
-import djcelery
-djcelery.setup_loader()
+# import djcelery
+# djcelery.setup_loader()
 #
 # import dj_database_url
 # db_from_env = dj_database_url.config(conn_max_age=500)
