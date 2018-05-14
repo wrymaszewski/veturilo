@@ -82,7 +82,7 @@ def reduce_data():
                     snapshot.free_stands, snapshot.timestamp])
     cols = ['location', 'avail_bikes', 'free_stands', 'timestamp']
     df = pd.DataFrame(lst, columns=cols)
-    df['time'] = df['timestamp'].dt.round('10min').dt.strftime('%H:%M')
+    df['time'] = df['timestamp'].dt.round('30min').dt.strftime('%H:%M')
 
     group = df.groupby(['location', 'time'])
     means = group.mean()
