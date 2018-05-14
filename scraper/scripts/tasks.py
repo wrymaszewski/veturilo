@@ -7,6 +7,7 @@ from datetime import datetime, timedelta, date
 from django.db.models import Avg
 from pytz import timezone
 from django.db.utils import OperationalError
+from time import sleep
 
 from scraper.models import Snapshot, Location, Stat
 
@@ -53,6 +54,7 @@ def take_snapshot():
             timestamp = datetime.now(tz = timezone('Europe/Warsaw'))
         )
         obj.save()
+        sleep(0.3)
         print('Time: ' +  str(obj.timestamp))
         print('----------')
 
