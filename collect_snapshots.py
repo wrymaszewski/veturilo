@@ -5,11 +5,11 @@ import django
 django.setup()
 
 from time import sleep
-from scraper.scripts.tasks import reduce_data, delete_old
+from scraper.scripts.tasks import take_snapshot
 from datetime import datetime
 
 if __name__ == '__main__':
-    present_date = datetime.now()
-    if present.date.day == 1:
-        reduce_data()
-        delete_old()
+    # taking snapshots every 30min
+    for i in range(46):
+        take_snapshot()
+        sleep(1800)
