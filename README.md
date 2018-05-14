@@ -11,7 +11,7 @@ Veturilo is a net of public bikes in Warsaw, Poland. However useful, sometimes i
 * Pandas
 * BeautifulSoup
 * Plotly
-* Celery
+* ~~Celery~~
 * HTML5
 * CSS
 * Javascript + JQuery
@@ -19,13 +19,14 @@ Veturilo is a net of public bikes in Warsaw, Poland. However useful, sometimes i
 ## To do
 - [x] Web scraper
 - [x] Interactive plots
+- [x] Deployment
 - [ ] Machine learning module
 - [ ] Frontend
-- [ ] Deployment
 
 ## CLI commands
-
-The app can be previewed on a local machine. Steps required are listed below:
+This app has been deploty to Python Anywhere: [Veturilo Stats](wrymaszewski.pythonanywhere.com).
+I has begun collecting data.
+The app can be also previewed on a local machine. Steps required are listed below:
 
 1. Download and install Python [Anaconda] distribution (https://www.anaconda.com/download/#linux)
 2. Create a virual environent in your terminal:
