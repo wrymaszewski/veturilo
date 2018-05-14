@@ -4,7 +4,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE','veturilo.settings')
 import django
 django.setup()
 
-from time import sleep
+# from time import sleep
 from scraper.scripts.tasks import reduce_data, delete_old
 from datetime import datetime
 
