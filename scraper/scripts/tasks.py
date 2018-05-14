@@ -18,7 +18,7 @@ def scrape(url='www.veturilo.waw.pl/mapa-stacji/'):
     pandas dataframe from it.
     """
 
-    req = requests.get('https://' + url)
+    req = requests.get('http://' + url)
     table = BeautifulSoup(req.text).table
     dat=[]
     for row in table.find_all('tr'):
