@@ -9,7 +9,7 @@ from scraper.scripts.tasks import take_snapshot
 from datetime import datetime
 
 if __name__ == '__main__':
-    # taking snapshots every 30min
-    for i in range(46):
+    # taking snapshots every 10min
+    for i in range(142):
         take_snapshot()
-        sleep(1800)
+        sleep(600)
