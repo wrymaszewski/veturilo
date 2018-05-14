@@ -1,15 +1,12 @@
-import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE','veturilo.settings')
-
-import django
-django.setup()
-
 import requests
 import pandas as pd
+
 
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta, date
 from django.db.models import Avg
+from pytz import timezone
+from django.db.utils import OperationalError
 
 from scraper.models import Snapshot, Location, Stat
 
@@ -19,6 +16,7 @@ def scrape(url='www.veturilo.waw.pl/mapa-stacji/'):
     This function will extract the table from Veturilo website and create a
     pandas dataframe from it.
     """
+
     req = requests.get('https://' + url)
     table = BeautifulSoup(req.text).table
     dat=[]
