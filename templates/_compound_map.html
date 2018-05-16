@@ -1,0 +1,46 @@
+{# GoogleMaps API#}
+{% load scraper_filters %}
+<div class="map-section">
+  <div id="map"></div>
+</div>
+<script>
+  function initMap() {
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 11,
+      // Warsaw coords
+      center: {lat: 52.2132957, lng: 20.8760129}
+    });
+
+    // Create an array of alphabetical characters used to label the markers.
+    var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    // Add some markers to the map.
+    // Note: The code uses the JavaScript Array.prototype.map() method to
+    // create an array of markers based on a given "locations" array.
+    // The map() method here has nothing to do with the Google Maps API.
+    var markers = locations.map(function(location, i) {
+      return new google.maps.Marker({
+        position: location,
+        label: labels[i % labels.length]
+      });
+    });
+
+    // Add a marker clusterer to manage the markers.
+    var markerCluster = new MarkerClusterer(map, markers,
+        {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+  }
+  var locations = []
+  {% for location in locations %}
+    locations.push(
+      {
+        lat: {{location.coordinates|get_coord}},
+        lng: {{location.coordinates|get_coord:'lng'}}
+      }
+    )
+  {% endfor %}
+  console.log(locations[6])
+</script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARgfbgBXMspECr3Xal6K8jv0vMjWaEL2c&callback=initMap">
+</script>

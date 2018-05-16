@@ -20,20 +20,29 @@
     <!-- dataTables -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <!-- markerclusterer -->
+    <script src="{% static 'js/markerclusterer.js' %}"></script>
     <!-- RWD -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   </head>
   <body>
     <div class="container">
+
+      <!-- loader -->
+      <div id="loading_div">
+        <div id="loading"></div>
+      </div>
+
       <h1 class="text-center font-weight-bold mb-5 mt-5">Veturilo Statistics</h1>
       <div class="row">
         <div class="col-md-7 col-sm-12">
-          <table class="datatable">
+          <table class="datatable table table-striped"
+           style="width=100%">
             <thead>
               <th>Location</th>
-              <th>Available Bikes</th>
-              <th>Free Stands</th>
+              <th>Bikes</th>
+              <th>Stands</th>
               <th>Charts</th>
             </thead>
             <tbody>
@@ -63,6 +72,8 @@
         <div class="col-md-5 col-sm-12">
           {% if location %}
             {% include "_map.html" %}
+          {% else %}
+            {% include "_compound_map.html" %}
           {% endif %}
         </div>
       </div>
