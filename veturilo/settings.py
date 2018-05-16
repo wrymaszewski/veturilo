@@ -91,7 +91,7 @@ DATABASES = {
         'NAME': 'wrymaszewski$VeturiloDB',
         'USER': 'wrymaszewski',
         'PASSWORD': 'wr12345678',
-        'HOST': 'mysql.pythonanywhere-services.com',
+        'HOST': 'wrymaszewski.mysql.pythonanywhere-services.com',
     }
 }
 
