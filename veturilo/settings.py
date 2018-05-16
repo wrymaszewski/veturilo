@@ -25,7 +25,7 @@ SECRET_KEY = 'o$+rk-tt-r%u4_8jptpq(q86_bpl5@899ddq9r4im_zj1xmpn9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['wrymaszewski.pythonanywhere.com']
+ALLOWED_HOSTS = ['wrymaszewski.pythonanywhere.com', '127.0.0.1']
 
 
 # Application definition
@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'veturilo.wsgi.application'
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 
-#Development
+# Development
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
