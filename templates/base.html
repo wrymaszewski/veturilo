@@ -70,11 +70,7 @@
           <p class="font-italic">Last update: {{locations.0.snapshots.last.timestamp}}</p>
         </div>
         <div class="col-md-5 col-sm-12">
-          {% if location %}
-            {% include "_map.html" %}
-          {% else %}
-            {% include "_compound_map.html" %}
-          {% endif %}
+          {% include "_map.html" %}
         </div>
       </div>
       <hr>
