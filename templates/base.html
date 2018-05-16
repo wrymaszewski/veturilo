@@ -36,8 +36,8 @@
 
       <h1 class="text-center font-weight-bold mb-5 mt-5">Veturilo Statistics</h1>
       <div class="row">
-        <div class="col-md-7 col-sm-12">
-          <table class="datatable table table-striped hidden-xs"
+        <div class="col-md-7 col-sm-12 d-none d-sm-block">
+          <table class="datatable table table-striped"
            style="width=100%">
             <thead>
               <th>Location</th>
@@ -77,6 +77,14 @@
       <div class="row">
         <div class="col-md-12 col-sm-12">
           {% block charts %}{% endblock charts %}
+            {% if months %}
+              <p>Monthly plots:
+              {% for month in months %}
+                <a href="{% url 'scraper:stat_plots' slug=loc.slug year=month|date:'Y' month=month|date:'m' %}">
+                    {{month|date:'M Y'}}</a>&nbsp
+              {% endfor %}
+            {% endif %}
+          </p>
         </div>
       </div>
     </div>
