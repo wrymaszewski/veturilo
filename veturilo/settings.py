@@ -23,7 +23,7 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = 'o$+rk-tt-r%u4_8jptpq(q86_bpl5@899ddq9r4im_zj1xmpn9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['wrymaszewski.pythonanywhere.com', '127.0.0.1']
 
@@ -77,23 +77,23 @@ WSGI_APPLICATION = 'veturilo.wsgi.application'
 
 
 # Development
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-#Production
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'wrymaszewski$VeturiloDB',
-#         'USER': 'wrymaszewski',
-#         'PASSWORD': 'wr12345678',
-#         'HOST': 'wrymaszewski.mysql.pythonanywhere-services.com',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
+
+#Production
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'wrymaszewski$VeturiloDB',
+        'USER': 'wrymaszewski',
+        'PASSWORD': 'wr12345678',
+        'HOST': 'wrymaszewski.mysql.pythonanywhere-services.com',
+    }
+}
 
 
 # Password validation
