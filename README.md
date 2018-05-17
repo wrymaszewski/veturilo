@@ -20,11 +20,12 @@ Veturilo is a net of public bikes in Warsaw, Poland. However useful, sometimes i
 - [x] Web scraper
 - [x] Interactive plots
 - [x] Deployment
+- [x] Frontend
+- [ ] REST API
 - [ ] Machine learning module
-- [ ] Frontend
 
 ## CLI commands
-This app has been deploty to Python Anywhere: [Veturilo Stats](http://wrymaszewski.pythonanywhere.com).
+This app has been deployed to Python Anywhere: [Veturilo Stats](http://wrymaszewski.pythonanywhere.com).
 I has begun collecting data.
 The app can be also previewed on a local machine. Steps required are listed below:
 
