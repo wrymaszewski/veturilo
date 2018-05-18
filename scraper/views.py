@@ -10,7 +10,11 @@ import plotly.graph_objs as go
 from django.shortcuts import render
 from .models import Snapshot, Location, Stat
 from django.views.generic import TemplateView
-# Create your views here.
+
+# rest framework
+from .serializers import LocationSerializer, SnapshotSerializer, StatSerializer
+from rest_framework import generics
+
 
 def get_months(location):
     """Getting months for statistics from a given Location object"""
@@ -201,3 +205,33 @@ class StatPlots(TemplateView):
         context['stat_wd'] = draw_scatter(df, weekend=False, sd=True)
         context['stat_we'] = draw_scatter(df, weekend=True, sd=True)
         return context
+
+# REST Framework views
+
+class LocationList(generics.ListAPIView):
+    queryset = Location.objects.all()
+    serializer_class = LocationSerializer
+
+
+class LocationDetail(generics.RetrieveAPIView):
+    queryset = Location.objects.all()
+    serializer_class = LocationSerializer
+
+
+class SnapshotList(generics.ListAPIView):
+    queryset = Snapshot.objects.all()
+    serializer_class = SnapshotSerializer
+
+
+class SnapshotDetail(generics.RetrieveAPIView):
+    queryset = Snapshot.objects.all()
+    serializer_class = SnapshotSerializer
+
+
+class StatList(generics.ListAPIView):
+    queryset = Stat.objects.all()
+    serializer_class = StatSerializer
+
+class StatDetail(generics.RetrieveAPIView):
+    queryset = Stat.objects.all()
+    serializer_class = StatSerializer
