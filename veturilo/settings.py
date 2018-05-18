@@ -23,7 +23,7 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = 'o$+rk-tt-r%u4_8jptpq(q86_bpl5@899ddq9r4im_zj1xmpn9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['wrymaszewski.pythonanywhere.com', '127.0.0.1']
 
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'location_field.apps.DefaultConfig',
+    'rest_framework',
     'scraper',
 ]
 
@@ -77,24 +78,31 @@ WSGI_APPLICATION = 'veturilo.wsgi.application'
 
 
 # Development
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
-#Production
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'wrymaszewski$VeturiloDB',
-        'USER': 'wrymaszewski',
-        'PASSWORD': 'wr12345678',
-        'HOST': 'wrymaszewski.mysql.pythonanywhere-services.com',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
+#Production
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'wrymaszewski$VeturiloDB',
+#         'USER': 'wrymaszewski',
+#         'PASSWORD': 'wr12345678',
+#         'HOST': 'wrymaszewski.mysql.pythonanywhere-services.com',
+#     }
+# }
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
