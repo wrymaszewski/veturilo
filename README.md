@@ -20,8 +20,8 @@ Veturilo is a net of public bikes in Warsaw, Poland. However useful, sometimes i
 - [x] Web scraper
 - [x] Interactive plots
 - [x] Deployment
-- [x] Frontend
-- [ ] REST API
+- [x] Frontend, RWD
+- [x] REST API
 - [ ] Machine learning module
 
 ## CLI commands
@@ -60,3 +60,32 @@ The app can be also previewed on a local machine. Steps required are listed belo
     python manage.py runserver
     ```
     local server setup default address is <http://127.0.0.1:8000/>.
+    
+## API documentation
+You can retrieve the collected data using the Django REST Framework functionalities.
+
+#### Collection of all locations
+<http://wrymaszewski.pythonanywhere.com/scraper/api/locations> human-readible form
+<http://wrymaszewski.pythonanywhere.com/scraper/api/locations/?format=json> JSON
+
+#### Collection of a particular location - you need to use a primary key from the database (pk)
+<http://wrymaszewski.pythonanywhere.com/scraper/api/location/(pk)> human-readible form
+<http://wrymaszewski.pythonanywhere.com/scraper/api/location/(pk)/?format=json> JSON
+
+#### Collection of all snapshots (it will take a lot of time!)
+<http://wrymaszewski.pythonanywhere.com/scraper/api/snapshots> human-readible form
+<http://wrymaszewski.pythonanywhere.com/scraper/api/snapshots/?format=json> JSON
+
+#### Collection of a particular snapshot - you need to use a primary key from the database (pk)
+<http://wrymaszewski.pythonanywhere.com/scraper/api/snapshot/(pk)> human-readible form
+<http://wrymaszewski.pythonanywhere.com/scraper/api/snapshot/(pk)/?format=json> JSON
+    
+#### Collection of all monthly statistics (If there are any available)
+<http://wrymaszewski.pythonanywhere.com/scraper/api/stats> human-readible form
+<http://wrymaszewski.pythonanywhere.com/scraper/api/stats/?format=json> JSON
+
+#### Collection of a particular monthly statistic - you need to use a primary key from the database (pk)
+<http://wrymaszewski.pythonanywhere.com/scraper/api/stat/(pk)> human-readible form
+<http://wrymaszewski.pythonanywhere.com/scraper/api/stat/(pk)/?format=json> JSON    
+
+
