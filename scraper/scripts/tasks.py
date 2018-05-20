@@ -1,7 +1,6 @@
 import requests
 import pandas as pd
 
-
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta, date
 from django.db.models import Avg
@@ -20,7 +19,7 @@ def scrape(url='www.veturilo.waw.pl/mapa-stacji/'):
 
     req = requests.get('http://' + url)
     table = BeautifulSoup(req.text).table
-    dat=[]
+    dat = []
     for row in table.find_all('tr'):
         cols = row.find_all('td')
         cols = [ele.text.strip() for ele in cols]
@@ -30,6 +29,7 @@ def scrape(url='www.veturilo.waw.pl/mapa-stacji/'):
     df = pd.DataFrame(dat, columns=cols)
     df.dropna(inplace=True)
     return df
+
 
 def take_snapshot():
     """
@@ -45,18 +45,14 @@ def take_snapshot():
                                 all_stands=single['Stands'],
                                 coordinates=single['Coords']
                                 )
-        print('Location: ' + loc.name)
         # add a new snapshot
         obj = Snapshot(
-            location = loc,
-            avail_bikes = single['Bikes'],
-            free_stands = single['Free stands'],
-            timestamp = datetime.now(tz = timezone('Europe/Warsaw'))
+            location=loc,
+            avail_bikes=single['Bikes'],
+            free_stands=single['Free stands'],
+            timestamp=datetime.now(tz=timezone('Europe/Warsaw'))
         )
         obj.save()
-        # sleep(0.3)
-        print('Time: ' +  str(obj.timestamp))
-        print('----------')
 
 
 def delete_old():
@@ -69,6 +65,7 @@ def delete_old():
             )
     objs.delete()
 
+
 def reduce_data():
     """
     Function averages data from every month and places it in a separate
@@ -76,7 +73,7 @@ def reduce_data():
     """
     snapshots = Snapshot.objects.all()
     locations = Location.objects.all()
-    lst=[]
+    lst = []
     for snapshot in snapshots:
         lst.append([snapshot.location.name, snapshot.avail_bikes,
                     snapshot.free_stands, snapshot.timestamp])
@@ -92,33 +89,24 @@ def reduce_data():
     last_month = first - timedelta(days=1)
 
     for name, time in means.index:
-        subset_mean = means.xs((name, time), level=(0,1), axis=0)
-        subset_sd = sd.xs((name, time), level=(0,1), axis=0)
+        subset_mean = means.xs((name, time), level=(0, 1), axis=0)
+        subset_sd = sd.xs((name, time), level=(0, 1), axis=0)
         m = Stat.objects.get_or_create(
-        location = locations.get(name=name),
-        avail_bikes_mean = subset_mean['avail_bikes'],
-        free_stands_mean = subset_mean['free_stands'],
-        avail_bikes_sd = subset_sd['avail_bikes'],
-        free_stands_sd = subset_sd['free_stands'],
-        time = time,
-        month = last_month
-        )
-        print(name + ' calculated')
+            location=locations.get(name=name),
+            avail_bikes_mean=subset_mean['avail_bikes'],
+            free_stands_mean=subset_mean['free_stands'],
+            avail_bikes_sd=subset_sd['avail_bikes'],
+            free_stands_sd=subset_sd['free_stands'],
+            time=time,
+            month=last_month
+            )
 
-    print('Collecting snapshots')
-    snaps = Snapshot.objects.all()
-    print('Snapshots collected, applying modifications')
-    i=0
-    length = len(snaps)
-    for s in snaps:
-        i += 1
-        print(i)
-        if i>35000:
-            s.save()
-            print('snap saved ' + str(i)+'/'+str(length))
-            print('-----------')
-    print('Deleting stats')
-    Stat.objects.all().delete()
-    print('Stats deleted, reducing data')
-    reduce_data()
-    print('Data reduced')
+    # snaps = Snapshot.objects.all()
+    # i = 0
+    # length = len(snaps)
+    # for s in snaps:
+    #     i += 1
+    #     print(i)
+    #     if i > 35000:
+    #         s.save()
+    # reduce_data()

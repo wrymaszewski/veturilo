@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Location, Snapshot, Stat
 
+
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
@@ -11,11 +12,12 @@ class SnapshotSerializer(serializers.ModelSerializer):
     class Meta:
         model = Snapshot
         fields = ('pk', 'location', 'avail_bikes', 'free_stands',
-                 'timestamp', 'weekend')
+                  'timestamp', 'weekend')
 
 
 class StatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Stat
         fields = ('pk', 'location', 'avail_bikes_mean', 'free_stands_mean',
-                'avail_bikes_sd', 'free_stands_sd', 'time', 'month', 'weekend')
+                  'avail_bikes_sd', 'free_stands_sd', 'time',
+                  'month', 'weekend')

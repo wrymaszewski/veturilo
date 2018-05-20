@@ -1,5 +1,5 @@
 import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE','veturilo.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'veturilo.settings')
 
 import django
 django.setup()

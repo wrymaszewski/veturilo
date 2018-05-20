@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'veturilo.wsgi.application'
 #     }
 # }
 
-#Production
+# Production
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

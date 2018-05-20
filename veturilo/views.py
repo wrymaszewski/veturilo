@@ -2,10 +2,7 @@ from django.views.generic import TemplateView
 from scraper.models import Location
 
 
-
 class Home(TemplateView):
-
-
     template_name = 'index.html'
 
     def get_context_data(self, *args, **kwargs):

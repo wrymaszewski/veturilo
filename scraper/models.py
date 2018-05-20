@@ -6,8 +6,8 @@ from django.utils.text import slugify
 
 # Create your models here.
 
-class Location(models.Model):
 
+class Location(models.Model):
     name = models.CharField(max_length=255)
     slug = models.CharField(max_length=255)
     all_stands = models.IntegerField()
@@ -21,26 +21,22 @@ class Location(models.Model):
         super().save(*args, **kwargs)
 
 
-
 class Snapshot(models.Model):
-
-
     location = models.ForeignKey(Location, on_delete=models.CASCADE,
-                                related_name='snapshots')
+                                 related_name='snapshots')
     avail_bikes = models.IntegerField()
     free_stands = models.IntegerField()
     timestamp = models.DateTimeField()
     weekend = models.BooleanField()
 
     def save(self, *args, **kwargs):
-        self.weekend = self.timestamp.weekday() in [5,6]
+        self.weekend = self.timestamp.weekday() in [5, 6]
         super().save(*args, **kwargs)
 
+
 class Stat(models.Model):
-
-
     location = models.ForeignKey(Location, on_delete=models.CASCADE,
-                                related_name='stats')
+                                 related_name='stats')
     avail_bikes_mean = models.FloatField(null=True)
     free_stands_mean = models.FloatField(null=True)
     avail_bikes_sd = models.FloatField(null=True)
